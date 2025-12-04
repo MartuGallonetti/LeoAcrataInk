@@ -63,7 +63,7 @@ export default function Hero() {
               Professional Tattoo Artist
             </h2>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white leading-tight">
-              Leo Acrata <br />
+              Leo Acrata<br />
               <span className="text-zinc-700 italic">Ink</span>
             </h1>
           </motion.div>
