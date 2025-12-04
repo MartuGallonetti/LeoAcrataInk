@@ -20,7 +20,7 @@ export default function About() {
           transition={{ duration: 0.6 }}
         >
           <span className="block text-red-500/80 text-xs tracking-[0.3em] uppercase mb-6 font-bold">
-            La Historia
+            Historia
           </span>
           <h2 className="text-3xl md:text-5xl font-serif text-white mb-8 drop-shadow-lg">
             Más que tinta, una extensión <br /> de tu propia identidad.

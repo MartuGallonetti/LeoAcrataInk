@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react'
 import { cn } from '../../utils/cn'
@@ -15,6 +15,15 @@ const images = [
 export default function Gallery() {
   const [activeIndex, setActiveIndex] = useState(1)
   const [selectedImage, setSelectedImage] = useState(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detectar viewport solo del lado del cliente (Cloudflare safe)
+  useEffect(() => {
+    const checkSize = () => setIsMobile(window.innerWidth < 768)
+    checkSize()
+    window.addEventListener('resize', checkSize)
+    return () => window.removeEventListener('resize', checkSize)
+  }, [])
 
   const handleNext = () => setActiveIndex((prev) => (prev + 1) % images.length)
   const handlePrev = () => setActiveIndex((prev) => (prev - 1 + images.length) % images.length)
@@ -25,46 +34,53 @@ export default function Gallery() {
       {/* Fondo */}
       <div className="absolute inset-0 bg-zinc-900"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-800/50 via-zinc-900/80 to-black/80"></div>
-      <div className="absolute inset-0 opacity-[0.35] mix-blend-overlay pointer-events-none" 
-          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}>
-      </div>
+      <div
+        className="absolute inset-0 opacity-[0.35] mix-blend-overlay pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+        }}
+      />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-serif text-white drop-shadow-lg">Galería Selecta</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-white drop-shadow-lg">Galeria</h2>
           <div className="h-px w-16 bg-red-900/60 mx-auto mt-4"></div>
         </div>
 
         <div className="relative h-[400px] w-full flex items-center justify-center perspective-1000">
           
-          {/* Botones optimizados para TOUCH (más padding y tamaño) */}
-          <button 
-            onClick={handlePrev} 
+          {/* Botón anterior */}
+          <button
+            onClick={handlePrev}
             className="absolute left-2 md:left-20 z-50 p-3 md:p-2 text-red-900 hover:text-red-600 active:scale-95 transition-all bg-black/40 backdrop-blur-md rounded-full border border-red-900/30 shadow-lg"
           >
             <ChevronLeft size={32} strokeWidth={3} />
           </button>
 
-          <button 
-            onClick={handleNext} 
+          {/* Botón siguiente */}
+          <button
+            onClick={handleNext}
             className="absolute right-2 md:right-20 z-50 p-3 md:p-2 text-red-900 hover:text-red-600 active:scale-95 transition-all bg-black/40 backdrop-blur-md rounded-full border border-red-900/30 shadow-lg"
           >
             <ChevronRight size={32} strokeWidth={3} />
           </button>
 
+          {/* Carrusel */}
           {images.map((src, index) => {
-            let position = (index - activeIndex)
+            const position = index - activeIndex
             const isCenter = index === activeIndex
-            if (Math.abs(position) > 2) return null 
+
+            // solo renderizar las 5 imágenes del frente (optimización)
+            if (Math.abs(position) > 2) return null
 
             return (
               <motion.div
                 key={index}
                 layout
                 initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ 
-                  x: position * (window.innerWidth < 768 ? 180 : 240), // Menor distancia en móviles
-                  scale: isCenter ? 1.1 : 0.85, 
+                animate={{
+                  x: position * (isMobile ? 180 : 240),
+                  scale: isCenter ? 1.1 : 0.85,
                   opacity: isCenter ? 1 : 0.3,
                   zIndex: isCenter ? 40 : 10,
                   filter: isCenter ? 'grayscale(0%)' : 'grayscale(100%) blur(2px)'
@@ -79,7 +95,12 @@ export default function Gallery() {
                   else setActiveIndex(index)
                 }}
               >
-                <img src={src} alt="Tattoo work" className="w-full h-full object-cover pointer-events-none" />
+                <img
+                  src={src}
+                  alt="Tattoo work"
+                  className="w-full h-full object-cover pointer-events-none"
+                />
+
                 {isCenter && (
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/20 group">
                     <Maximize2 className="text-white drop-shadow-lg" size={32} />
@@ -90,6 +111,8 @@ export default function Gallery() {
           })}
         </div>
       </div>
+
+      {/* Lightbox */}
       <Lightbox selectedImage={selectedImage} onClose={() => setSelectedImage(null)} />
     </section>
   )
