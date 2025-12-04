@@ -34,7 +34,7 @@ export default function App() {
       <footer className="relative z-10 py-8 text-center border-t border-zinc-900 bg-black">
         {/* CAMBIO AQUÍ: Se cambió text-zinc-600 a text-zinc-400 para mejor legibilidad */}
         <p className="text-zinc-200 text-[10px] uppercase tracking-[0.3em]">
-          © {new Date().getFullYear()} Artista Tatuador. Todos los derechos reservados.
+          © {new Date().getFullYear()} Leo Acrata. Todos los derechos reservados.
         </p>
       </footer>
     </main>

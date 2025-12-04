@@ -43,7 +43,7 @@ export default function Gallery() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-serif text-white drop-shadow-lg">Galería Selecta</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-white drop-shadow-lg">Galeria</h2>
           <div className="h-px w-16 bg-red-900/60 mx-auto mt-4"></div>
         </div>
 

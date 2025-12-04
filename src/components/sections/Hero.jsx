@@ -8,7 +8,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-zinc-900"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-800/50 via-zinc-900/80 to-black/80"></div>
       <div className="absolute inset-0 opacity-[0.35] mix-blend-overlay pointer-events-none" 
-           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}>
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}>
       </div>
 
       <div className="flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8 items-center lg:items-start h-full relative z-10">
@@ -63,8 +63,8 @@ export default function Hero() {
               Professional Tattoo Artist
             </h2>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white leading-tight">
-              ETERNAL <br />
-              <span className="text-zinc-700 italic">VISION</span>
+              Leo Acrata <br />
+              <span className="text-zinc-700 italic">Ink</span>
             </h1>
           </motion.div>
         </div>
@@ -78,7 +78,7 @@ export default function Hero() {
         className="w-full flex justify-center lg:justify-end lg:pr-12 relative z-10 pt-4 order-3"
       >
         <div className="font-serif text-2xl md:text-3xl text-zinc-500 italic rotate-[-5deg] opacity-60 select-none">
-          Sebastian V.
+          Leo A.
         </div>
       </motion.div>
     </section>
