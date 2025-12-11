@@ -4,12 +4,14 @@ import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react'
 import { cn } from '../../utils/cn'
 import Lightbox from '../../components/Lightbox'
 
+// CAMBIO AQUÍ: Referencia directa a la carpeta public con "/"
+// Reemplaza estos nombres por los nombres reales de tus archivos en la carpeta public
 const images = [
-  "https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1562962230-16bc46364924?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1590246814883-0556361d3efd?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1550537602-366d8dc5f0ed?q=80&w=800&auto=format&fit=crop",
+  "/leoMonja.jpg", 
+  "/mediaManga.jpg",
+  "/foxRiver.jpg",
+  "/foxRiverCerca.jpg",
+  "/leoGorra.jpg",
 ]
 
 export default function Gallery() {
