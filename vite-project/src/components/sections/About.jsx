@@ -27,7 +27,13 @@ export default function About() {
           </h2>
           <div className="w-px h-16 bg-gradient-to-b from-red-600 to-transparent mx-auto mb-8 shadow-[0_0_15px_rgba(220,38,38,0.5)]"></div>
           <p className="text-zinc-300 leading-loose text-lg font-light text-balance drop-shadow-md">
-            Comencé mi viaje artístico explorando el dibujo clásico, donde aprendí la importancia de la luz, la sombra y la composición. Hace 5 años, trasladé esa pasión al lienzo más exigente: la piel humana. Mi enfoque combina la precisión técnica con una narrativa visual profunda, buscando que cada pieza no solo decore, sino que cuente una historia perdurable. Me especializo en crear atmósferas oscuras y elegantes que resisten el paso del tiempo.
+            Soy Leo Acrata y tatúo desde 2015. Desde muy chico me sedujo el mundo del tatuaje: las convenciones, las personas y las historias que uno va conociendo en el camino. Siempre me impactó que un cliente te permita plasmar algo tan importante, algo que significa realmente para ellos, y te dé la confianza de dejarlo en su piel. Esa confianza la valoré desde el primer día.
+
+Con los años ese interés se transformó en compromiso, estudio y disciplina, hasta encontrar mi lugar en el realismo black & grey, estilo en el que me siento más conectado y donde puedo explotar mi lado más detallista.
+
+Me especializo en proyectos grandes y mangas completas, donde puedo construir composposiciones con impacto visual, buen contraste y detalles definidos. Busco que cada pieza sea sólida, prolija y duradera, pensada para envejecer bien y mantener su fuerza con el tiempo.
+
+Para mí, tatuar es un proceso artístico y también humano. Disfruto escuchar al cliente, entender lo que quiere representar y transformarlo en un diseño con identidad, fuerza y sentido. Cada trabajo es una colaboración: una idea que llega, un concepto que crece y una pieza final que queda para toda la vida
           </p>
         </motion.div>
       </div>
