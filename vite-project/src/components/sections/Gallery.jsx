@@ -22,11 +22,11 @@ const images = [
   "/leonantebrazo.jpg",
   "/mangaMonja.jpg",
   "/mediaManga.jpg",
-  "/mMediaPiernaCara.jpg",
+  "/MediaPiernaCara.jpg",
   "/monjaPrimeraSesion.jpg",
   "/Snoop.jpg",
   "/tatuandoRemeNegra",
-  
+
 
 ]
 
