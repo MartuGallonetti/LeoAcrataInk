@@ -1,9 +1,4 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Manrope:wght@200;400;600&display=swap");
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @layer base {
     :root {
