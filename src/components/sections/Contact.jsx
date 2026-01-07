@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Upload, X, Send, CheckCircle2, Loader2, AlertCircle } from 'lucide-react'
+import { Upload, X, Send, CheckCircle2, Loader2, AlertCircle, MessageCircle, Instagram } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 import { cn } from '../../utils/cn'
 
@@ -18,34 +18,24 @@ export default function Contact() {
     files: []
   })
 
-  // --- CAMBIO CLAVE AQUÍ ---
+  // TU LÓGICA DE ARCHIVOS (INTACTA)
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const newFiles = Array.from(e.target.files)
-      
-      // Filtramos archivos que pesen más de 2MB (Límite EmailJS Free)
       const validFiles = newFiles.filter(file => {
         const sizeInMB = file.size / (1024 * 1024)
         if (sizeInMB > 2) {
-          alert(`La imagen "${file.name}" pesa más de 2MB. Por favor sube una versión más liviana.`)
+          alert(`La imagen "${file.name}" pesa más de 2MB.`)
           return false
         }
         return true
       })
-
-      setForm(prev => ({
-        ...prev,
-        files: [...prev.files, ...validFiles]
-      }))
+      setForm(prev => ({ ...prev, files: [...prev.files, ...validFiles] }))
     }
   }
-  // -------------------------
 
   const removeFile = (index) => {
-    setForm(prev => ({
-      ...prev,
-      files: prev.files.filter((_, i) => i !== index)
-    }))
+    setForm(prev => ({ ...prev, files: prev.files.filter((_, i) => i !== index) }))
   }
 
   const handleSubmit = async (e) => {
@@ -53,11 +43,11 @@ export default function Contact() {
     setLoading(true)
     setStatus(null)
 
+    // RECUERDA PONER TUS CREDENCIALES REALES DE EMAILJS AQUÍ
     const serviceId = 'YOUR_SERVICE_ID'
     const templateId = 'YOUR_TEMPLATE_ID'
     const publicKey = 'YOUR_PUBLIC_KEY'
 
-    // Sincronización técnica para enviar solo los archivos válidos
     if (fileInputRef.current) {
       const dataTransfer = new DataTransfer()
       form.files.forEach(file => dataTransfer.items.add(file))
@@ -66,115 +56,135 @@ export default function Contact() {
 
     try {
       await emailjs.sendForm(serviceId, templateId, formRef.current, publicKey)
-      
       setLoading(false)
       setStatus('success')
       setForm({ name: '', age: '', hasTattoos: null, idea: '', files: [] })
       if(fileInputRef.current) fileInputRef.current.value = ""
-      
       setTimeout(() => setStatus(null), 5000)
     } catch (error) {
-      console.error("Error al enviar:", error)
+      console.error("Error:", error)
       setLoading(false)
       setStatus('error')
     }
   }
 
+  // Componente de Etiqueta Estilizada
   const FieldLabel = ({ children }) => (
-    <div className="mb-2">
-      <label className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 font-bold">{children}</label>
-      <div className="h-px w-full bg-gradient-to-r from-red-900/60 to-transparent mt-1"></div>
-    </div>
+    <label className="block text-xs font-serif text-zinc-500 uppercase tracking-widest mb-2">
+      {children}
+    </label>
   )
 
   return (
-    <section id="contact" className="relative py-16 px-6 overflow-hidden border-t border-white/5 bg-zinc-900">
+    <section id="contact" className="relative py-24 px-6 bg-black border-t border-zinc-900 overflow-hidden">
       
-      <div className="absolute inset-0 bg-zinc-900"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-800/50 via-zinc-900/80 to-black/80"></div>
-      <div className="absolute inset-0 opacity-[0.35] mix-blend-overlay pointer-events-none" 
-           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}>
-      </div>
+      {/* Fondo Sutil (Spotlight) */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-zinc-900/40 via-black to-black pointer-events-none"></div>
 
-      <div className="max-w-5xl mx-auto relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
+      <div className="max-w-6xl mx-auto relative z-10 flex flex-col lg:flex-row gap-16 lg:gap-24">
         
-        <div className="w-full lg:w-1/3 pt-4 text-center lg:text-left">
-          <h2 className="text-3xl md:text-4xl font-serif text-white mb-4 drop-shadow-md">Contacto</h2>
-          <p className="text-zinc-400 text-sm leading-relaxed mb-6 text-balance">
-            Para agendar una cita, completa el formulario. Responderé a la brevedad posible.
-          </p>
-          <div className="flex flex-col gap-2 text-xs text-zinc-500 uppercase tracking-widest">
-            <span>Buenos Aires, ARG</span>
-            <span>Estudio Privado</span>
+        {/* COLUMNA IZQUIERDA: Texto y Redes */}
+        <div className="w-full lg:w-1/3 pt-4">
+          <div className="sticky top-24">
+            <h2 className="text-red-900 tracking-[0.3em] text-xs font-bold uppercase mb-4">
+              Contacto
+            </h2>
+            <h3 className="text-4xl md:text-5xl font-serif text-white mb-6 font-light leading-tight">
+              INICIAR <br/> PROYECTO.
+            </h3>
+            <p className="text-zinc-400 text-sm leading-loose mb-8 font-light">
+              Para cotizaciones y turnos, completá el formulario con la mayor cantidad de detalles posible.
+            </p>
+
+            {/* Accesos rápidos (Por si no quieren llenar el form) */}
+            <div className="space-y-4">
+               <a href="https://wa.me/5493410000000" target="_blank" className="flex items-center gap-4 p-4 border border-zinc-800 rounded-sm hover:border-zinc-600 transition-colors group">
+                  <div className="p-2 bg-zinc-900 rounded-full text-zinc-400 group-hover:text-green-500 transition-colors">
+                     <MessageCircle size={20} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-zinc-500 uppercase tracking-widest">Respuesta Rápida</p>
+                    <p className="text-white font-serif">WhatsApp</p>
+                  </div>
+               </a>
+               
+               <a href="https://instagram.com/leoacrata" target="_blank" className="flex items-center gap-4 p-4 border border-zinc-800 rounded-sm hover:border-zinc-600 transition-colors group">
+                  <div className="p-2 bg-zinc-900 rounded-full text-zinc-400 group-hover:text-pink-500 transition-colors">
+                     <Instagram size={20} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-zinc-500 uppercase tracking-widest">Portafolio</p>
+                    <p className="text-white font-serif">Instagram</p>
+                  </div>
+               </a>
+            </div>
           </div>
         </div>
 
-        <form ref={formRef} onSubmit={handleSubmit} className="w-full lg:w-2/3 bg-zinc-900/50 border border-zinc-800/50 p-6 md:p-8 rounded-sm backdrop-blur-sm shadow-xl relative">
-          
-          <input type="hidden" name="has_tattoos" value={form.hasTattoos === true ? 'Sí' : form.hasTattoos === false ? 'No' : ''} />
-          <input type="hidden" name="attachments_count" value={form.files.length} />
+        {/* COLUMNA DERECHA: Formulario Minimalista */}
+        <div className="w-full lg:w-2/3">
+           <form ref={formRef} onSubmit={handleSubmit} className="relative space-y-8">
+            
+            {/* Campos Ocultos */}
+            <input type="hidden" name="has_tattoos" value={form.hasTattoos === true ? 'Sí' : 'No'} />
+            
+            {/* Mensajes de Estado (Overlay) */}
+            <AnimatePresence>
+              {(loading || status === 'success') && (
+                <motion.div 
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  className="absolute inset-0 z-50 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 rounded-sm border border-zinc-800"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="animate-spin text-red-900 mb-4" size={40} />
+                      <p className="text-zinc-400 text-xs tracking-[0.2em] uppercase">Procesando...</p>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="text-zinc-200 mb-4" size={40} />
+                      <h3 className="text-xl font-serif text-white mb-1">Solicitud Enviada</h3>
+                      <p className="text-zinc-500 text-sm">Te responderé pronto.</p>
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-          <AnimatePresence>
-            {(loading || status === 'success') && (
-              <motion.div 
-                initial={{ opacity: 0 }} 
-                animate={{ opacity: 1 }} 
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 z-50 bg-zinc-950/90 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 rounded-sm"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="animate-spin text-red-600 mb-4" size={48} />
-                    <p className="text-zinc-300 text-sm tracking-widest uppercase animate-pulse">Enviando solicitud y archivos...</p>
-                  </>
-                ) : (
-                  <>
-                    <CheckCircle2 className="text-green-500 mb-4" size={48} />
-                    <h3 className="text-2xl font-serif text-white mb-2">¡Mensaje Enviado!</h3>
-                    <p className="text-zinc-400 text-sm">Me pondré en contacto contigo pronto.</p>
-                  </>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
+            {/* Inputs - Diseño Limpio (Solo Border Bottom) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               <div className="group">
+                 <FieldLabel>Nombre Completo</FieldLabel>
+                 <input 
+                   type="text" name="from_name" value={form.name} required
+                   onChange={(e) => setForm({...form, name: e.target.value})}
+                   className="w-full bg-transparent border-b border-zinc-800 py-3 text-zinc-200 focus:outline-none focus:border-red-900 transition-colors font-light text-lg placeholder-zinc-700"
+                   placeholder="Ej: Juan Pérez"
+                 />
+               </div>
+               <div className="group">
+                 <FieldLabel>Edad</FieldLabel>
+                 <input 
+                   type="number" name="from_age" value={form.age} required
+                   onChange={(e) => setForm({...form, age: e.target.value})}
+                   className="w-full bg-transparent border-b border-zinc-800 py-3 text-zinc-200 focus:outline-none focus:border-red-900 transition-colors font-light text-lg placeholder-zinc-700"
+                   placeholder="+18"
+                 />
+               </div>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-6">
-            <div className="col-span-1 md:col-span-6">
-              <FieldLabel>Nombre Completo</FieldLabel>
-              <input 
-                type="text" 
-                name="from_name"
-                value={form.name}
-                onChange={(e) => setForm({...form, name: e.target.value})}
-                className="w-full bg-transparent border-b border-zinc-800 py-2 text-zinc-200 focus:outline-none focus:border-red-800 transition-colors text-sm"
-                placeholder="Tu nombre" required disabled={loading}
-              />
-            </div>
-            <div className="col-span-1 md:col-span-2">
-              <FieldLabel>Edad</FieldLabel>
-              <input 
-                type="number" 
-                name="from_age"
-                value={form.age}
-                onChange={(e) => setForm({...form, age: e.target.value})}
-                className="w-full bg-transparent border-b border-zinc-800 py-2 text-zinc-200 focus:outline-none focus:border-red-800 transition-colors text-sm"
-                placeholder="18+" required disabled={loading}
-              />
-            </div>
-            <div className="col-span-1 md:col-span-4">
-              <FieldLabel>¿Tatuajes?</FieldLabel>
-              <div className="flex gap-2 mt-2">
+            <div>
+              <FieldLabel>¿Tenes otros tatuajes?</FieldLabel>
+              <div className="flex gap-4 mt-3">
                 {['SI', 'NO'].map((option) => (
                   <button
-                    key={option}
-                    type="button"
+                    key={option} type="button"
                     onClick={() => setForm({...form, hasTattoos: option === 'SI'})}
-                    disabled={loading}
                     className={cn(
-                      "flex-1 py-1 text-xs border transition-all duration-300",
+                      "px-6 py-2 text-xs border transition-all duration-300 rounded-sm tracking-widest",
                       (option === 'SI' && form.hasTattoos === true) || (option === 'NO' && form.hasTattoos === false)
-                        ? "bg-red-900/20 border-red-900 text-red-100" 
-                        : "border-zinc-700 text-zinc-500 hover:border-zinc-500"
+                        ? "bg-zinc-100 border-zinc-100 text-black font-bold" 
+                        : "border-zinc-800 text-zinc-500 hover:border-zinc-600"
                     )}
                   >
                     {option}
@@ -182,81 +192,69 @@ export default function Contact() {
                 ))}
               </div>
             </div>
-          </div>
 
-          <div className="mb-6">
-            <FieldLabel>Descripción de la Idea</FieldLabel>
-            <textarea
-              rows={3}
-              name="message"
-              value={form.idea}
-              onChange={(e) => setForm({...form, idea: e.target.value})}
-              className="w-full bg-transparent border-b border-zinc-800 py-2 text-zinc-200 focus:outline-none focus:border-red-800 transition-colors text-sm resize-none"
-              placeholder="Zona, tamaño, estilo..." required disabled={loading}
-            />
-          </div>
-
-          <div className="mb-8">
-            <FieldLabel>Referencias (Máx 2MB por foto)</FieldLabel>
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mt-2">
-              <label className={cn(
-                "w-full md:w-auto text-center cursor-pointer flex items-center justify-center gap-2 px-4 py-3 bg-zinc-800 transition-colors rounded-sm text-xs text-zinc-300 border border-zinc-700",
-                loading ? "opacity-50 cursor-not-allowed" : "hover:bg-zinc-700"
-              )}>
-                <Upload size={14} />
-                <span>Subir Fotos</span>
-                <input 
-                  type="file" 
-                  name="my_file" 
-                  ref={fileInputRef}
-                  multiple 
-                  accept="image/*" 
-                  onChange={handleFileChange} 
-                  className="hidden" 
-                  disabled={loading} 
-                />
-              </label>
-              
-              <div className="flex gap-2 overflow-x-auto w-full pb-2 md:pb-0">
-                <AnimatePresence>
-                  {form.files.map((file, index) => (
-                    <motion.div
-                      key={`${file.name}-${index}`}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.5 }}
-                      className="flex-shrink-0 flex items-center gap-1 bg-zinc-900 border border-zinc-700 px-2 py-1 rounded text-[10px] text-zinc-400"
-                    >
-                      <span className="max-w-[60px] truncate">{file.name}</span>
-                      <button type="button" onClick={() => removeFile(index)} className="hover:text-red-500" disabled={loading}>
-                        <X size={10} />
-                      </button>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
+            <div className="group">
+               <FieldLabel>Tu Idea (Zona, tamaño y estilo)</FieldLabel>
+               <textarea
+                 name="message" rows={4} value={form.idea} required
+                 onChange={(e) => setForm({...form, idea: e.target.value})}
+                 className="w-full bg-transparent border-b border-zinc-800 py-3 text-zinc-200 focus:outline-none focus:border-red-900 transition-colors font-light text-lg resize-none placeholder-zinc-700 leading-relaxed"
+                 placeholder="Ej: Quiero un dragón en el antebrazo, aprox 15cm, estilo realista blanco y negro..."
+               />
             </div>
-          </div>
 
-          <div className="flex flex-col gap-4">
+            {/* Upload Zone - Estilo Dashboard */}
+            <div className="bg-zinc-900/30 border border-dashed border-zinc-800 p-6 rounded-sm hover:border-zinc-600 transition-colors">
+               <div className="flex justify-between items-center mb-4">
+                  <span className="text-xs font-serif text-zinc-500 uppercase tracking-widest">Referencias (Opcional)</span>
+                  <span className="text-[10px] text-zinc-600">Máx 2MB por foto</span>
+               </div>
+               
+               <div className="flex flex-wrap gap-3">
+                  <label className="cursor-pointer flex items-center justify-center gap-2 px-4 py-3 bg-zinc-800 hover:bg-zinc-700 transition-colors rounded-sm text-xs text-zinc-300 border border-zinc-700">
+                     <Upload size={14} />
+                     <span>Subir Imagen</span>
+                     <input 
+                       type="file" ref={fileInputRef} multiple accept="image/*" 
+                       onChange={handleFileChange} className="hidden" 
+                     />
+                  </label>
+
+                  {/* Lista de archivos */}
+                  <AnimatePresence>
+                    {form.files.map((file, index) => (
+                      <motion.div
+                        key={index} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }}
+                        className="flex items-center gap-2 bg-black border border-zinc-800 px-3 py-2 rounded-sm"
+                      >
+                         <span className="text-[10px] text-zinc-300 max-w-[80px] truncate">{file.name}</span>
+                         <button type="button" onClick={() => removeFile(index)} className="text-zinc-500 hover:text-red-500">
+                           <X size={12} />
+                         </button>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+               </div>
+            </div>
+
+            {/* Botón de Enviar - Grande y Limpio */}
             <button 
-              type="submit" 
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-red-950 to-red-900 hover:from-red-900 hover:to-red-800 text-white py-4 uppercase tracking-[0.2em] text-xs font-bold transition-all duration-300 border border-red-900/50 shadow-lg shadow-red-900/10 flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              type="submit" disabled={loading}
+              className="w-full bg-zinc-100 hover:bg-white text-black py-5 mt-4 uppercase tracking-[0.2em] text-xs font-bold transition-all duration-300 rounded-sm disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-3 group"
             >
-              <span>{loading ? 'Procesando...' : 'Enviar Solicitud'}</span>
-              {!loading && <Send size={14} />}
+              <span>{loading ? 'Enviando...' : 'Enviar Solicitud'}</span>
+              {!loading && <Send size={14} className="group-hover:translate-x-1 transition-transform" />}
             </button>
-            
-            {status === 'error' && (
-              <div className="flex items-center justify-center gap-2 text-red-500 text-xs mt-2">
-                <AlertCircle size={14} />
-                <span>Error al enviar. Verifica el peso de las imágenes.</span>
-              </div>
-            )}
-          </div>
 
-        </form>
+            {status === 'error' && (
+              <p className="text-red-500 text-xs text-center mt-2 flex items-center justify-center gap-2">
+                 <AlertCircle size={12} /> Hubo un error. Revisá tu conexión o el tamaño de las fotos.
+              </p>
+            )}
+
+           </form>
+        </div>
+
       </div>
     </section>
   )
