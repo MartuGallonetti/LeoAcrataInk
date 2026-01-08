@@ -53,11 +53,14 @@ export default function Gallery() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-900/50 to-black/80"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-serif text-white drop-shadow-lg">Galeria</h2>
-          <div className="h-px w-16 bg-red-900/60 mx-auto mt-4"></div>
+<div className="text-center mb-16 animate-fade-in-up">
+          <h2 className="text-red-900 tracking-[0.3em] text-xs font-bold uppercase mb-4">
+            Galeria
+          </h2>
+          <h3 className="text-3xl md:text-5xl font-serif text-white font-light max-w-3xl mx-auto leading-tight">
+            Mis trabajos <br className="hidden md:block" /> 
+          </h3>
         </div>
-
         <div className="relative h-[400px] w-full flex items-center justify-center">
           
           <button

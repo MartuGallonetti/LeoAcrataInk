@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Upload, X, Send, CheckCircle2, Loader2, AlertCircle, MessageCircle, Instagram } from 'lucide-react'
+import { Upload, X, Send, CheckCircle2, Loader2, AlertCircle, Instagram } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 import { cn } from '../../utils/cn'
 
@@ -18,7 +18,7 @@ export default function Contact() {
     files: []
   })
 
-  // TU LÓGICA DE ARCHIVOS (INTACTA)
+  // --- LÓGICA DE ARCHIVOS ---
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const newFiles = Array.from(e.target.files)
@@ -43,7 +43,6 @@ export default function Contact() {
     setLoading(true)
     setStatus(null)
 
-    // RECUERDA PONER TUS CREDENCIALES REALES DE EMAILJS AQUÍ
     const serviceId = 'YOUR_SERVICE_ID'
     const templateId = 'YOUR_TEMPLATE_ID'
     const publicKey = 'YOUR_PUBLIC_KEY'
@@ -68,123 +67,89 @@ export default function Contact() {
     }
   }
 
-  // Componente de Etiqueta Estilizada
-  const FieldLabel = ({ children }) => (
-    <label className="block text-xs font-serif text-zinc-500 uppercase tracking-widest mb-2">
-      {children}
-    </label>
+  // Componente de Input (TEXTOS EN BLANCO PURO)
+  const InputBase = ({ label, ...props }) => (
+    <div className="flex flex-col gap-2">
+      {/* CAMBIO: text-white (Blanco puro para el título) */}
+      <label className="text-[11px] font-bold uppercase tracking-wider text-white">{label}</label>
+      <input 
+        {...props}
+        // CAMBIO: Borde más claro (border-zinc-600) para que se vea bien el recuadro
+        className="w-full bg-zinc-900 border border-zinc-600 rounded-sm px-3 py-3 text-sm text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/50 transition-all placeholder-zinc-500"
+      />
+    </div>
   )
 
   return (
-    <section id="contact" className="relative py-24 px-6 bg-black border-t border-zinc-900 overflow-hidden">
+    <section id="contact" className="relative py-20 px-4 bg-black border-t border-zinc-800">
       
-      {/* Fondo Sutil (Spotlight) */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-zinc-900/40 via-black to-black pointer-events-none"></div>
+      {/* Fondo con luz roja */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-red-900/15 via-black to-black pointer-events-none"></div>
 
-      <div className="max-w-6xl mx-auto relative z-10 flex flex-col lg:flex-row gap-16 lg:gap-24">
+      <div className="max-w-3xl mx-auto relative z-10">
         
-        {/* COLUMNA IZQUIERDA: Texto y Redes */}
-        <div className="w-full lg:w-1/3 pt-4">
-          <div className="sticky top-24">
-            <h2 className="text-red-900 tracking-[0.3em] text-xs font-bold uppercase mb-4">
-              Contacto
-            </h2>
-            <h3 className="text-4xl md:text-5xl font-serif text-white mb-6 font-light leading-tight">
-              INICIAR <br/> PROYECTO.
-            </h3>
-            <p className="text-zinc-400 text-sm leading-loose mb-8 font-light">
-              Para cotizaciones y turnos, completá el formulario con la mayor cantidad de detalles posible.
-            </p>
-
-            {/* Accesos rápidos (Por si no quieren llenar el form) */}
-            <div className="space-y-4">
-               <a href="https://wa.me/5493410000000" target="_blank" className="flex items-center gap-4 p-4 border border-zinc-800 rounded-sm hover:border-zinc-600 transition-colors group">
-                  <div className="p-2 bg-zinc-900 rounded-full text-zinc-400 group-hover:text-green-500 transition-colors">
-                     <MessageCircle size={20} />
-                  </div>
-                  <div>
-                    <p className="text-xs text-zinc-500 uppercase tracking-widest">Respuesta Rápida</p>
-                    <p className="text-white font-serif">WhatsApp</p>
-                  </div>
-               </a>
-               
-               <a href="https://instagram.com/leoacrata" target="_blank" className="flex items-center gap-4 p-4 border border-zinc-800 rounded-sm hover:border-zinc-600 transition-colors group">
-                  <div className="p-2 bg-zinc-900 rounded-full text-zinc-400 group-hover:text-pink-500 transition-colors">
-                     <Instagram size={20} />
-                  </div>
-                  <div>
-                    <p className="text-xs text-zinc-500 uppercase tracking-widest">Portafolio</p>
-                    <p className="text-white font-serif">Instagram</p>
-                  </div>
-               </a>
-            </div>
-          </div>
+        {/* Cabecera */}
+        <div className="text-center mb-10">
+          <h2 className="text-red-500 tracking-[0.2em] text-[10px] font-bold uppercase mb-2 drop-shadow-sm">Contacto</h2>
+          <h3 className="text-3xl font-serif text-white mb-2">Presupuestos</h3>
+          <p className="text-zinc-300 text-sm font-light">Completá el formulario para cotizar tu idea.</p>
         </div>
 
-        {/* COLUMNA DERECHA: Formulario Minimalista */}
-        <div className="w-full lg:w-2/3">
-           <form ref={formRef} onSubmit={handleSubmit} className="relative space-y-8">
-            
-            {/* Campos Ocultos */}
-            <input type="hidden" name="has_tattoos" value={form.hasTattoos === true ? 'Sí' : 'No'} />
-            
-            {/* Mensajes de Estado (Overlay) */}
-            <AnimatePresence>
+        {/* TARJETA DEL FORMULARIO (Fondo Gris visible) */}
+        <div className="bg-zinc-950 border border-zinc-700 rounded-sm p-6 md:p-8 shadow-[0_0_40px_rgba(220,38,38,0.05)] relative overflow-hidden">
+          
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 relative z-10">
+             
+             {/* Overlay de Carga */}
+             <AnimatePresence>
               {(loading || status === 'success') && (
                 <motion.div 
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  className="absolute inset-0 z-50 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 rounded-sm border border-zinc-800"
+                  className="absolute inset-0 z-50 bg-zinc-900/95 flex flex-col items-center justify-center text-center p-4 backdrop-blur-sm"
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="animate-spin text-red-900 mb-4" size={40} />
-                      <p className="text-zinc-400 text-xs tracking-[0.2em] uppercase">Procesando...</p>
+                      <Loader2 className="animate-spin text-red-500 mb-3" size={32} />
+                      <p className="text-white text-xs tracking-widest uppercase animate-pulse">Enviando...</p>
                     </>
                   ) : (
                     <>
-                      <CheckCircle2 className="text-zinc-200 mb-4" size={40} />
-                      <h3 className="text-xl font-serif text-white mb-1">Solicitud Enviada</h3>
-                      <p className="text-zinc-500 text-sm">Te responderé pronto.</p>
+                      <CheckCircle2 className="text-red-500 mb-3" size={40} />
+                      <h3 className="text-lg font-bold text-white mb-1">¡Enviado!</h3>
+                      <p className="text-zinc-300 text-xs">Te responderé pronto.</p>
                     </>
                   )}
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* Inputs - Diseño Limpio (Solo Border Bottom) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               <div className="group">
-                 <FieldLabel>Nombre Completo</FieldLabel>
-                 <input 
-                   type="text" name="from_name" value={form.name} required
-                   onChange={(e) => setForm({...form, name: e.target.value})}
-                   className="w-full bg-transparent border-b border-zinc-800 py-3 text-zinc-200 focus:outline-none focus:border-red-900 transition-colors font-light text-lg placeholder-zinc-700"
-                   placeholder="Ej: Juan Pérez"
-                 />
-               </div>
-               <div className="group">
-                 <FieldLabel>Edad</FieldLabel>
-                 <input 
-                   type="number" name="from_age" value={form.age} required
-                   onChange={(e) => setForm({...form, age: e.target.value})}
-                   className="w-full bg-transparent border-b border-zinc-800 py-3 text-zinc-200 focus:outline-none focus:border-red-900 transition-colors font-light text-lg placeholder-zinc-700"
-                   placeholder="+18"
-                 />
-               </div>
+            <input type="hidden" name="has_tattoos" value={form.hasTattoos === true ? 'Sí' : 'No'} />
+
+            {/* Fila 1 */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="md:col-span-3">
+                <InputBase label="Nombre Completo" name="from_name" value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} placeholder="Tu nombre" required />
+              </div>
+              <div className="md:col-span-1">
+                <InputBase label="Edad" type="number" name="from_age" value={form.age} onChange={(e) => setForm({...form, age: e.target.value})} placeholder="+18" required />
+              </div>
             </div>
 
-            <div>
-              <FieldLabel>¿Tenes otros tatuajes?</FieldLabel>
-              <div className="flex gap-4 mt-3">
+            {/* Fila 2: Tatuajes previos */}
+            <div className="flex flex-col gap-2">
+              {/* CAMBIO: Título en Blanco Puro */}
+              <span className="text-[11px] font-bold uppercase tracking-wider text-white">¿Tenes tatuajes?</span>
+              <div className="flex gap-3">
                 {['SI', 'NO'].map((option) => (
                   <button
                     key={option} type="button"
                     onClick={() => setForm({...form, hasTattoos: option === 'SI'})}
                     className={cn(
-                      "px-6 py-2 text-xs border transition-all duration-300 rounded-sm tracking-widest",
+                      "flex-1 py-3 text-xs border rounded-sm transition-all duration-300 font-bold",
                       (option === 'SI' && form.hasTattoos === true) || (option === 'NO' && form.hasTattoos === false)
-                        ? "bg-zinc-100 border-zinc-100 text-black font-bold" 
-                        : "border-zinc-800 text-zinc-500 hover:border-zinc-600"
+                        ? "bg-red-700 border-red-700 text-white shadow-md shadow-red-900/40" 
+                        // CAMBIO: Botón inactivo con texto más claro (text-zinc-300) y borde visible
+                        : "bg-zinc-900 border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-white"
                     )}
                   >
                     {option}
@@ -193,66 +158,70 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="group">
-               <FieldLabel>Tu Idea (Zona, tamaño y estilo)</FieldLabel>
-               <textarea
-                 name="message" rows={4} value={form.idea} required
-                 onChange={(e) => setForm({...form, idea: e.target.value})}
-                 className="w-full bg-transparent border-b border-zinc-800 py-3 text-zinc-200 focus:outline-none focus:border-red-900 transition-colors font-light text-lg resize-none placeholder-zinc-700 leading-relaxed"
-                 placeholder="Ej: Quiero un dragón en el antebrazo, aprox 15cm, estilo realista blanco y negro..."
-               />
+            {/* Fila 3: Idea */}
+            <div className="flex flex-col gap-2">
+              {/* CAMBIO: Título en Blanco Puro */}
+              <label className="text-[11px] font-bold uppercase tracking-wider text-white">Tu Idea</label>
+              <textarea
+                name="message" rows={3} value={form.idea} onChange={(e) => setForm({...form, idea: e.target.value})}
+                // CAMBIO: Borde más visible (zinc-600)
+                className="w-full bg-zinc-900 border border-zinc-600 rounded-sm px-3 py-3 text-sm text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/50 transition-all placeholder-zinc-500 resize-none"
+                placeholder="Describí zona, tamaño aproximado en cm y estilo..." required
+              />
             </div>
 
-            {/* Upload Zone - Estilo Dashboard */}
-            <div className="bg-zinc-900/30 border border-dashed border-zinc-800 p-6 rounded-sm hover:border-zinc-600 transition-colors">
-               <div className="flex justify-between items-center mb-4">
-                  <span className="text-xs font-serif text-zinc-500 uppercase tracking-widest">Referencias (Opcional)</span>
-                  <span className="text-[10px] text-zinc-600">Máx 2MB por foto</span>
+            {/* Fila 4: Archivos */}
+            <div className="bg-zinc-900 rounded-sm p-4 border border-zinc-600 hover:border-red-500/50 transition-colors">
+               <div className="flex items-center justify-between mb-3">
+                 {/* CAMBIO: Título en Blanco Puro */}
+                 <span className="text-[10px] uppercase text-white font-bold tracking-wider">Referencias</span>
+                 <span className="text-[10px] text-zinc-400">Máx 2MB</span>
                </div>
                
-               <div className="flex flex-wrap gap-3">
-                  <label className="cursor-pointer flex items-center justify-center gap-2 px-4 py-3 bg-zinc-800 hover:bg-zinc-700 transition-colors rounded-sm text-xs text-zinc-300 border border-zinc-700">
+               <div className="flex flex-wrap items-center gap-3">
+                  <label className="cursor-pointer bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-sm text-xs flex items-center gap-2 transition-all border border-zinc-500 hover:border-white shadow-sm font-medium">
                      <Upload size={14} />
-                     <span>Subir Imagen</span>
-                     <input 
-                       type="file" ref={fileInputRef} multiple accept="image/*" 
-                       onChange={handleFileChange} className="hidden" 
-                     />
+                     <span>Subir Fotos</span>
+                     <input type="file" ref={fileInputRef} multiple accept="image/*" onChange={handleFileChange} className="hidden" />
                   </label>
 
-                  {/* Lista de archivos */}
                   <AnimatePresence>
                     {form.files.map((file, index) => (
-                      <motion.div
-                        key={index} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }}
-                        className="flex items-center gap-2 bg-black border border-zinc-800 px-3 py-2 rounded-sm"
-                      >
-                         <span className="text-[10px] text-zinc-300 max-w-[80px] truncate">{file.name}</span>
-                         <button type="button" onClick={() => removeFile(index)} className="text-zinc-500 hover:text-red-500">
-                           <X size={12} />
-                         </button>
+                      <motion.div initial={{opacity:0, scale:0.8}} animate={{opacity:1, scale:1}} exit={{opacity:0, scale:0.5}} key={index} 
+                        className="bg-red-900/30 border border-red-500/50 px-3 py-1 rounded-sm flex items-center gap-2">
+                         <span className="text-[10px] text-white max-w-[80px] truncate">{file.name}</span>
+                         <button type="button" onClick={() => removeFile(index)} className="text-red-400 hover:text-white transition-colors"><X size={12} /></button>
                       </motion.div>
                     ))}
                   </AnimatePresence>
                </div>
             </div>
 
-            {/* Botón de Enviar - Grande y Limpio */}
+            {/* Botón Enviar */}
             <button 
               type="submit" disabled={loading}
-              className="w-full bg-zinc-100 hover:bg-white text-black py-5 mt-4 uppercase tracking-[0.2em] text-xs font-bold transition-all duration-300 rounded-sm disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-3 group"
+              className="w-full bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white py-4 rounded-sm uppercase tracking-[0.2em] text-xs font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-900/30 hover:shadow-red-600/40 flex justify-center items-center gap-2 group mt-4 border border-red-900/50"
             >
-              <span>{loading ? 'Enviando...' : 'Enviar Solicitud'}</span>
+              <span>{loading ? 'Procesando...' : 'Enviar Solicitud'}</span>
               {!loading && <Send size={14} className="group-hover:translate-x-1 transition-transform" />}
             </button>
 
             {status === 'error' && (
-              <p className="text-red-500 text-xs text-center mt-2 flex items-center justify-center gap-2">
-                 <AlertCircle size={12} /> Hubo un error. Revisá tu conexión o el tamaño de las fotos.
-              </p>
+              <div className="text-center">
+                <p className="text-red-400 text-[10px] mt-3 flex items-center justify-center gap-1 font-bold">
+                  <AlertCircle size={12} /> Error al enviar. Verifica tu conexión.
+                </p>
+              </div>
             )}
 
-           </form>
+          </form>
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-center mt-12 opacity-80 hover:opacity-100 transition-opacity">
+          <a href="https://instagram.com/leo_acrata" target="_blank" className="flex items-center gap-2 text-white hover:text-red-400 transition-colors text-xs uppercase tracking-widest group font-bold">
+              <Instagram size={16} className="text-red-500 group-hover:scale-110 transition-transform" /> Instagram Portafolio
+          </a>
         </div>
 
       </div>
