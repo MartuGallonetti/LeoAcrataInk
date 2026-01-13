@@ -1,38 +1,32 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export default function History() {
+export default function About() {
   return (
-    <section id="historia" className="py-24 px-6 bg-black relative overflow-hidden">
+    <section className="py-24 px-6 bg-black relative overflow-hidden">
       
-      {/* Fondo decorativo sutil */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-red-900/50 to-transparent"></div>
+      {/* FONDO DE LUZ AMBIENTE (Mejora lectura) */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1a1a1a_0%,_#000000_70%)] pointer-events-none"></div>
 
-      <div className="container mx-auto relative z-10">
+      <div className="container mx-auto relative z-10 max-w-5xl text-center">
         
-        {/* Encabezado */}
-        <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-red-900 tracking-[0.3em] text-xs font-bold uppercase mb-4">
-            Historia
-          </h2>
-          <h3 className="text-3xl md:text-5xl font-serif text-white font-light max-w-3xl mx-auto leading-tight">
-            Más que tinta, una extensión <br className="hidden md:block" /> de tu propia identidad.
+        <div className="mb-12">
+          <h2 className="text-red-800 tracking-[0.3em] text-xs font-bold uppercase mb-4">Historia</h2>
+          <h3 className="text-4xl md:text-5xl font-serif text-white font-light leading-tight">
+            MÁS QUE TINTA.
           </h3>
           <div className="w-px h-16 bg-gradient-to-b from-red-900 via-red-900/50 to-transparent mx-auto mt-8"></div>
         </div>
 
-        {/* CONTENIDO DEL TEXTO */}
-        {/* CAMBIO 1: max-w-5xl (Antes era max-w-2xl o 3xl). Esto lo hace mucho más ancho. */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="max-w-5xl mx-auto text-center"
+          transition={{ duration: 0.8 }}
+          // Fondo del texto sutilmente más claro que negro puro
+          className="bg-zinc-950/50 backdrop-blur-sm p-8 md:p-12 rounded-sm border border-white/5"
         >
-          {/* CAMBIO 2: leading-normal (Antes leading-relaxed). Esto reduce el espacio entre renglones. */}
-          {/* También agregué 'text-justify md:text-center' para que en pantallas grandes se vea equilibrado pero ancho */}
-          <p className="text-zinc-400 text-sm md:text-base leading-normal font-light">
+          <p className="text-zinc-300 text-sm md:text-lg leading-relaxed font-light text-justify md:text-center tracking-wide">
             Soy Leo Acrata y tatúo desde 2015. Desde muy chico me sedujo el mundo del tatuaje: las convenciones, las 
             personas y las historias que uno va conociendo en el camino. Siempre me impactó que un cliente te permita 
             plasmar algo tan importante, algo que significa realmente para ellos, y te dé la confianza de dejarlo en su piel. 
@@ -45,12 +39,10 @@ export default function History() {
             representar y transformarlo en un diseño con identidad, fuerza y sentido. Cada trabajo es una colaboración: 
             una idea que llega, un concepto que crece y una pieza final que queda para toda la vida.
           </p>
-
-          {/* Firma o detalle final opcional */}
+          
           <div className="mt-12 opacity-80">
-            <span className="font-serif text-white text-lg italic tracking-widest">Leo Acrata</span>
+            <span className="font-serif text-white text-xl italic tracking-widest">Leo Acrata</span>
           </div>
-
         </motion.div>
 
       </div>
