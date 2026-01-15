@@ -1,15 +1,9 @@
-
-
-    // CLAVES
-
-
-
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Send, CheckCircle2, Loader2, ImagePlus, AlertCircle, Instagram } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 
-// === ESTILO ANTI-FONDO BLANCO ===
+// ESTILOS
 const inputStyle = {
   WebkitBoxShadow: "0 0 0px 1000px #09090b inset",
   WebkitTextFillColor: "white",
@@ -35,32 +29,22 @@ const InputBase = ({ label, ...props }) => (
 export default function Contact() {
   const formRef = useRef()
   const fileInputId = "file-upload-input" 
-  
   const [loading, setLoading] = useState(false)
   const [loadingText, setLoadingText] = useState('')
   const [status, setStatus] = useState(null)
   
   const [form, setForm] = useState({
-    nombre: '',
-    email: '',
-    zona: '',
-    tamano: '',
-    mensaje: '',
-    files: [] 
+    nombre: '', email: '', zona: '', tamano: '', mensaje: '', files: [] 
   })
 
-  // --- 1. SELECCIÓN DE FOTOS ---
+  // FOTOS
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      // Solo permitimos 1 foto para simplificar el link
       const file = e.target.files[0];
-      
-      // Validación básica (Cloudinary se banca hasta 10MB gratis)
       if (file.size > 10 * 1024 * 1024) {
         alert("La foto es muy pesada (Máx 10MB).");
         return;
       }
-      
       setForm(prev => ({ ...prev, files: [file] }));
     }
   }
@@ -71,81 +55,51 @@ export default function Contact() {
     if (input) input.value = "";
   }
 
-  // --- 2. SUBIDA A CLOUDINARY ---
-  const uploadToCloudinary = async (file) => {
+  // ---- CLAVES CLOUDINARY ------
+    const uploadToCloudinary = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    
-    // === ¡PONÉ TUS CLAVES DE CLOUDINARY ACÁ! ===
-    const uploadPreset = "alrp7v6n"; // Ej: "ml_default" (lo sacás del paso 1)
-    const cloudName = "dfofi41bh";       // Ej: "martuapp"
-    // ===========================================
-
-    formData.append("upload_preset", uploadPreset);
+    formData.append("upload_preset", "alrp7v6n"); // TU PRESET
+    const cloudName = "dfofi41bh"; // <--- CAMBIAR POR TU CLOUD NAME
 
     try {
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-        { method: "POST", body: formData }
-      );
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, { method: "POST", body: formData });
+      if (!response.ok) throw new Error("Error Cloudinary");
       const data = await response.json();
-      return data.secure_url; // Esto devuelve el link https://...
+      return data.secure_url;
     } catch (error) {
-      console.error("Error subiendo a Cloudinary:", error);
-      throw new Error("Fallo la subida de imagen");
+      console.error(error);
+      throw error;
     }
   };
-
-  // --- 3. ENVÍO FINAL ---
+// -----CLAVES EMAILJS-----
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-
     const serviceId = 'service_c4273bg'
     const templateId = 'template_javeiqu'
     const publicKey = 'pvDY7rIDJypYZqU6H'
 
     try {
       let imageUrl = "Sin adjunto";
-
-      // A) Si hay foto, primero la subimos a la nube
       if (form.files.length > 0) {
         setLoadingText('Subiendo foto...');
         imageUrl = await uploadToCloudinary(form.files[0]);
       }
 
-      // B) Preparamos los datos para EmailJS
-      // Agregamos el link de la foto como una variable de texto
-      const templateParams = {
-        nombre: form.nombre,
-        email: form.email,
-        zona: form.zona,
-        tamano: form.tamano,
-        mensaje: form.mensaje,
-        imagen_url: imageUrl // Esta es la clave mágica
-      };
-
-      // C) Enviamos el mail
-      setLoadingText('Enviando consulta...');
+      const templateParams = { ...form, imagen_url: imageUrl };
+      setLoadingText('Enviando...');
       await emailjs.send(serviceId, templateId, templateParams, publicKey);
       
-      setLoading(false)
-      setStatus('success')
-      
-      // Limpiar
-      setForm({ nombre: '', email: '', zona: '', tamano: '', mensaje: '', files: [] })
-      const input = document.getElementById(fileInputId)
-      if (input) input.value = ""
-
+      setLoading(false); setStatus('success');
+      setForm({ nombre: '', email: '', zona: '', tamano: '', mensaje: '', files: [] });
     } catch (error) {
-      console.error("Error:", error)
-      setLoading(false)
-      setStatus('error')
+      setLoading(false); setStatus('error');
     }
   }
 
   return (
-    <section id="contact" className="relative py-20 px-4 bg-black border-t border-zinc-900 overflow-hidden min-h-screen flex items-center justify-center">
+    <section id="contact" className="relative py-20 px-4 bg-black border-t border-zinc-900 overflow-hidden min-h-screen flex flex-col items-center justify-center">
       
       <div className="max-w-4xl w-full mx-auto relative z-10">
         
@@ -160,21 +114,14 @@ export default function Contact() {
         <div className="bg-zinc-950 border border-zinc-800 rounded-sm p-6 md:p-8 shadow-2xl relative">
           
           <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 relative z-10">
-             
-             {/* === CARTEL DE ÉXITO === */}
-             <AnimatePresence>
+            <AnimatePresence>
               {status === 'success' && (
-                <motion.div 
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  className="absolute inset-0 z-50 bg-black/95 flex flex-col items-center justify-center text-center p-6 backdrop-blur-sm"
-                >
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-50 bg-black/95 flex flex-col items-center justify-center text-center p-6 backdrop-blur-sm">
                   <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
                     <CheckCircle2 className="text-green-500 mb-5 mx-auto" size={60} />
                     <h3 className="text-3xl font-serif text-white mb-3">¡Enviado!</h3>
                     <p className="text-zinc-300 text-sm mb-8">Leo te responderá pronto.</p>
-                    <button type="button" onClick={() => setStatus(null)} className="bg-white text-black px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest">
-                      Cerrar
-                    </button>
+                    <button type="button" onClick={() => setStatus(null)} className="bg-white text-black px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest">Cerrar</button>
                   </motion.div>
                 </motion.div>
               )}
@@ -190,72 +137,57 @@ export default function Contact() {
               <InputBase label="Tamaño Aprox (cm)" name="tamano" value={form.tamano} onChange={(e) => setForm({...form, tamano: e.target.value})} placeholder="Ej: 15x10 cm" required />
             </div>
 
-            <div className="flex flex-col gap-2 group">
+            <div className="flex flex-col gap-2">
               <label className="text-[11px] font-black uppercase tracking-[0.15em] text-zinc-300 ml-1">Descripción</label>
-              <textarea
-                name="mensaje" rows={4} value={form.mensaje} onChange={(e) => setForm({...form, mensaje: e.target.value})}
-                style={inputStyle}
-                className="w-full bg-zinc-950 border border-zinc-700 rounded-sm px-4 py-4 text-sm text-white font-medium focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-900 transition-all resize-none appearance-none"
-                placeholder="Detalles del diseño, estilo, etc..." required
-              />
+              <textarea name="mensaje" rows={4} value={form.mensaje} onChange={(e) => setForm({...form, mensaje: e.target.value})} style={inputStyle} className="w-full bg-zinc-950 border border-zinc-700 rounded-sm px-4 py-4 text-sm text-white font-medium focus:outline-none focus:border-red-600 transition-all resize-none appearance-none" placeholder="Detalles de la idea..." required />
             </div>
 
-            {/* SECCIÓN FOTOS (Subida a Cloudinary) */}
             <div className="space-y-3">
-               <label 
-                  htmlFor={fileInputId} 
-                  className="w-full border border-dashed border-zinc-600 bg-zinc-900/50 rounded-sm p-6 flex flex-col items-center justify-center gap-3 hover:bg-zinc-900 hover:border-white transition-all group cursor-pointer"
-               >
-                  <div className="p-3 bg-zinc-800 rounded-full group-hover:bg-zinc-700 transition-colors">
-                    <ImagePlus size={24} className="text-zinc-400 group-hover:text-white"/>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-white text-xs font-bold uppercase tracking-wider mb-1">Subir Referencia</p>
-                    <p className="text-zinc-500 text-[10px]">JPG o PNG (Carga rápida)</p>
-                  </div>
-               </label>
-
-               <input 
-                 id={fileInputId}
-                 type="file" 
-                 accept="image/*" 
-                 onChange={handleFileChange} 
-                 className="hidden" 
-               />
-
-               {form.files.length > 0 && (
-                 <div className="flex justify-center mt-3">
-                     <div className="bg-zinc-800 border border-zinc-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-2">
-                         <span className="max-w-[150px] truncate font-medium">{form.files[0].name}</span>
-                         <button type="button" onClick={removeFile} className="text-red-400 hover:text-red-300 font-bold p-1"><X size={14} /></button>
-                     </div>
-                 </div>
-               )}
+              <label htmlFor={fileInputId} className="w-full border border-dashed border-zinc-600 bg-zinc-900/50 rounded-sm p-6 flex flex-col items-center justify-center gap-3 hover:bg-zinc-900 transition-all cursor-pointer">
+                  <ImagePlus size={24} className="text-zinc-400"/>
+                  <p className="text-white text-xs font-bold uppercase tracking-wider">Subir Referencia</p>
+              </label>
+              <input id={fileInputId} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+              {form.files.length > 0 && (
+                <div className="flex justify-center mt-3">
+                    <div className="bg-zinc-800 border border-zinc-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-2">
+                        <span className="max-w-[150px] truncate">{form.files[0].name}</span>
+                        <button type="button" onClick={removeFile} className="text-red-400 p-1"><X size={14} /></button>
+                    </div>
+                </div>
+              )}
             </div>
 
-            {/* BOTÓN ENVIAR */}
-            <button 
-              type="submit" disabled={loading}
-              className="w-full bg-white text-black py-5 rounded-sm uppercase tracking-[0.3em] text-xs font-black transition-transform active:scale-[0.98] flex justify-center items-center gap-3 mt-6 hover:bg-zinc-200 shadow-xl"
-            >
+            <button type="submit" disabled={loading} className="w-full bg-white text-black py-5 rounded-sm uppercase tracking-[0.3em] text-xs font-black active:scale-[0.98] flex justify-center items-center gap-3 hover:bg-zinc-200 shadow-xl transition-all">
               <span>{loading ? loadingText : 'Enviar Consulta'}</span>
               {!loading && <Send size={16} className="text-red-700" />}
             </button>
-            
-            {status === 'error' && (
-              <div className="bg-red-900/20 border border-red-900/50 p-3 rounded-sm mt-4 text-center">
-                <p className="text-red-500 text-xs font-bold flex items-center justify-center gap-2"><AlertCircle size={16}/> Error al enviar.</p>
-              </div>
-            )}
-
           </form>
         </div>
 
-        <div className="flex justify-center mt-8 pb-4">
-          <a href="https://instagram.com/leo_acrata" target="_blank" className="flex items-center gap-2 text-zinc-400 text-[10px] uppercase tracking-[0.2em] hover:text-white transition-colors font-bold p-4">
-              <Instagram size={16} /> @leo_acrata
-          </a>
-        </div>
+        {/* === FOOTER CORRECTO === */}
+        <footer className="mt-12 flex flex-col items-center gap-6 pb-10">
+          <div className="flex items-center gap-6">
+            
+            {/* Llama a la imagen desde la carpeta PUBLIC */}
+            <img 
+              src="/logo.png" 
+              alt="LA Logo" 
+              className="w-32 h-32 object-contain brightness-110" 
+            />
+            
+            <div className="h-8 w-px bg-zinc-800"></div> 
+
+            <a href="https://instagram.com/leo_acrata" target="_blank" className="flex items-center gap-2 text-zinc-400 text-[11px] uppercase tracking-[0.2em] hover:text-white transition-all font-bold">
+              <Instagram size={18} /> @leo_acrata
+            </a>
+          </div>
+
+          <p className="text-zinc-600 text-[10px] uppercase tracking-[0.15em] font-medium">
+            © 2026 Leo Acrata. Todos los derechos reservados.
+          </p>
+        </footer>
+
       </div>
     </section>
   )
