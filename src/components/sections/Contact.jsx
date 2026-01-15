@@ -25,9 +25,9 @@ const InputBase = ({ label, ...props }) => (
       {...props}
       style={inputStyle}
       className="w-full bg-zinc-950 border border-zinc-700 rounded-sm px-4 py-4 text-sm text-white font-medium
-                 placeholder:text-zinc-600
-                 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-900
-                 transition-all appearance-none"
+                placeholder:text-zinc-600
+                focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-900
+                transition-all appearance-none"
     />
   </div>
 )
@@ -57,8 +57,8 @@ export default function Contact() {
       
       // Validación básica (Cloudinary se banca hasta 10MB gratis)
       if (file.size > 10 * 1024 * 1024) {
-         alert("La foto es muy pesada (Máx 10MB).");
-         return;
+        alert("La foto es muy pesada (Máx 10MB).");
+        return;
       }
       
       setForm(prev => ({ ...prev, files: [file] }));
@@ -77,8 +77,8 @@ export default function Contact() {
     formData.append("file", file);
     
     // === ¡PONÉ TUS CLAVES DE CLOUDINARY ACÁ! ===
-    const uploadPreset = "dfofi41bh"; // Ej: "ml_default" (lo sacás del paso 1)
-    const cloudName = "alrp7v6n";       // Ej: "martuapp"
+    const uploadPreset = "alrp7v6n"; // Ej: "ml_default" (lo sacás del paso 1)
+    const cloudName = "dfofi41bh";       // Ej: "martuapp"
     // ===========================================
 
     formData.append("upload_preset", uploadPreset);
