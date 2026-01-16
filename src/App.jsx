@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, Instagram } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Importamos tus componentes
 import Hero from './components/sections/Hero';
@@ -10,8 +11,16 @@ import Contact from './components/sections/Contact';
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  // Función para ir arriba de todo al tocar el logo
+  const [isLoading, setIsLoading] = useState(true);
+
+  // TIEMPO DE CARGA (2.5 segundos)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setIsMenuOpen(false);
@@ -22,21 +31,63 @@ export default function App() {
   return (
     <main className="bg-zinc-950 min-h-screen text-zinc-200 selection:bg-red-900 selection:text-white relative">
       
+      {/* === PANTALLA DE CARGA CON TU IMAGEN === */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div 
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="fixed inset-0 z-[10000] bg-black flex flex-col items-center justify-center"
+          >
+            {/* Animación de Latido */}
+            <motion.div
+              animate={{ 
+                scale: [1, 1.1, 1], // Efecto latido
+                opacity: [0.8, 1, 0.8] 
+              }}
+              transition={{ 
+                duration: 1.5, 
+                repeat: Infinity,
+                ease: "easeInOut" 
+              }}
+              className="relative"
+            >
+              {/* Luz roja difusa detrás */}
+              <div className="absolute inset-0 bg-red-900 blur-3xl rounded-full opacity-30 scale-150"></div>
+              
+              {/* IMAGEN DE CALAVERA */}
+              <img 
+                src="/calaveraPrecarga.png" 
+                alt="Loading..." 
+                className="w-32 h-32 md:w-40 md:h-40 object-contain relative z-10 drop-shadow-2xl" 
+              />
+            </motion.div>
+            
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mt-8 text-red-800 font-serif tracking-[0.5em] text-[10px] md:text-xs uppercase font-bold animate-pulse"
+            >
+              Cargando...
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* RUIDO */}
       <div className="fixed inset-0 z-[9999] pointer-events-none opacity-[0.05] mix-blend-overlay"
           style={{ backgroundImage: `url("https://grainy-gradients.vercel.app/noise.svg")` }}>
       </div>
 
-      {/* 1. NAVBAR (Menú) - MODIFICADO CON LOGO */}
-      <nav className="fixed top-0 w-full z-50 bg-gradient-to-b from-black/90 to-transparent transition-all duration-300">
+      {/* NAVBAR */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-1000 ${isLoading ? 'opacity-0 translate-y-[-20px]' : 'opacity-100 translate-y-0'} bg-gradient-to-b from-black/90 to-transparent`}>
         <div className="px-6 py-4 flex justify-between items-center">
           
-          {/* === CAMBIO: LOGO EN VEZ DE TEXTO === */}
+          {/* Logo Izquierda */}
           <div onClick={scrollToTop} className="relative group cursor-pointer">
-             {/* Luz Roja (Glow) - Efecto hover */}
             <div className="absolute inset-0 bg-red-600 blur-xl rounded-full opacity-0 group-hover:opacity-80 transition-opacity duration-500 scale-150"></div>
-            
-             {/* Imagen del Logo */}
             <img 
               src="/logo.png" 
               alt="Leo Acrata" 
@@ -67,16 +118,15 @@ export default function App() {
             </a>
           </div>
 
-          {/* Botón Hamburguesa Móvil */}
+          {/* Botón Mobile */}
           <button className="md:hidden text-zinc-300 hover:text-white z-50" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Menú Desplegable Móvil */}
+        {/* Menú Desplegable Mobile */}
         {isMenuOpen && (
           <div className="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 animate-fade-in-down">
-            {/* Logo en menú móvil también */}
             <img src="/logo.png" alt="Logo" className="w-20 h-20 object-contain mb-4 opacity-80" />
 
             <a href="#gallery" onClick={closeMenu} className="text-xl uppercase tracking-[0.2em] text-zinc-300 hover:text-white font-serif">Trabajos</a>
@@ -87,15 +137,12 @@ export default function App() {
         )}
       </nav>
 
-      {/* 2. CONTENEDOR PRINCIPAL */}
+      {/* CONTENEDOR PRINCIPAL */}
       <div className="relative z-10 pt-0">
         
-        {/* HERO MÓVIL (Solo visible en celular) */}
+        {/* HERO MÓVIL */}
         <section className="lg:hidden relative h-[85vh] w-full flex flex-col justify-end pb-12 overflow-hidden">
             <div className="absolute inset-0 z-0">
-              {/* === ACÁ ESTÁ EL ARREGLO DEL FONDO MÓVIL === 
-                  Cambié '/hero-1.webp' por '/leo-mobile.webp' 
-              */}
               <img 
                 src="/leo-mobile.webp" 
                 alt="Leo Mobile" 
@@ -105,7 +152,6 @@ export default function App() {
             </div>
             
             <div className="relative z-10 text-center px-6 animate-fade-in-up">
-              {/* === ACÁ ESTÁ EL CAMBIO DE TEXTO POR LOGO EN EL CENTRO DEL HERO MÓVIL === */}
               <div className="flex justify-center mb-6">
                 <img src="/logo.png" className="w-24 h-24 object-contain brightness-125 drop-shadow-2xl" alt="Logo Central" />
               </div>
@@ -120,7 +166,7 @@ export default function App() {
             </div>
         </section>
 
-        {/* HERO PC (Solo visible en escritorio) */}
+        {/* HERO PC */}
         <div className="hidden lg:block"><Hero /></div>
 
         <div id="gallery"><Gallery /></div>
