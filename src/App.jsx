@@ -125,14 +125,23 @@ export default function App() {
         </div>
 
         {/* Menú Desplegable Mobile */}
+{/* === MENÚ MÓVIL CORREGIDO (FONDO NEGRO SÓLIDO) === */}
         {isMenuOpen && (
-          <div className="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 animate-fade-in-down">
-            <img src="/logo.png" alt="Logo" className="w-20 h-20 object-contain mb-4 opacity-80" />
+          <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center gap-10 h-screen w-screen">
+            
+            {/* Botón X para cerrar (Arriba a la derecha) */}
+            <button onClick={closeMenu} className="absolute top-6 right-6 text-zinc-400 hover:text-red-500 p-2">
+              <X size={32} />
+            </button>
 
-            <a href="#gallery" onClick={closeMenu} className="text-xl uppercase tracking-[0.2em] text-zinc-300 hover:text-white font-serif">Trabajos</a>
-            <a href="#about" onClick={closeMenu} className="text-xl uppercase tracking-[0.2em] text-zinc-300 hover:text-white font-serif">Historia</a>
-            <a href="#aftercare" onClick={closeMenu} className="text-xl uppercase tracking-[0.2em] text-zinc-300 hover:text-white font-serif">Cuidados</a>
-            <a href="#contact" onClick={closeMenu} className="text-xl uppercase tracking-[0.2em] text-red-500 font-bold font-serif">Contacto</a>
+            {/* Logo en menú móvil */}
+            <img src="/logo.png" alt="Logo" className="w-24 h-24 object-contain mb-4 brightness-125" />
+
+            {/* Enlaces con más espacio entre ellos (gap-10 arriba) */}
+            <a href="#gallery" onClick={closeMenu} className="text-2xl uppercase tracking-[0.2em] text-zinc-300 hover:text-white font-serif font-bold">Trabajos</a>
+            <a href="#about" onClick={closeMenu} className="text-2xl uppercase tracking-[0.2em] text-zinc-300 hover:text-white font-serif font-bold">Historia</a>
+            <a href="#aftercare" onClick={closeMenu} className="text-2xl uppercase tracking-[0.2em] text-zinc-300 hover:text-white font-serif font-bold">Cuidados</a>
+            <a href="#contact" onClick={closeMenu} className="text-2xl uppercase tracking-[0.2em] text-red-600 hover:text-red-500 font-serif font-bold">Contacto</a>
           </div>
         )}
       </nav>
