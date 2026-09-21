@@ -93,7 +93,7 @@ export default function Contact() {
       
       setLoading(false); setStatus('success');
       setForm({ nombre: '', email: '', zona: '', tamano: '', mensaje: '', files: [] });
-    } catch (error) {
+    } catch {
       setLoading(false); setStatus('error');
     }
   }
