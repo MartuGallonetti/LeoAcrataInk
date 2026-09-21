@@ -125,7 +125,6 @@ export default function App() {
         </div>
 
         {/* Menú Desplegable Mobile */}
-{/* === MENÚ MÓVIL CORREGIDO (FONDO NEGRO SÓLIDO) === */}
         {isMenuOpen && (
           <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center gap-10 h-screen w-screen">
             
