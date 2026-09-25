@@ -183,7 +183,13 @@ export default function App() {
         <section className="relative flex h-[85vh] w-full flex-col justify-end overflow-hidden pb-12 lg:hidden">
           <div className="absolute inset-0 z-0">
             <img
-              src="/leo-mobile.webp"
+              src="/hero/leo-mobile-1280.webp"
+              srcSet="
+                /hero/leo-mobile-640.webp 640w,
+                /hero/leo-mobile-1280.webp 1280w,
+                /hero/leo-mobile-1920.webp 1920w
+              "
+              sizes="100vw"
               alt="Leo Acrata, tattoo artist"
               loading="eager"
               fetchPriority="high"
