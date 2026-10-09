@@ -1,16 +1,35 @@
-# React + Vite
+# Leo Acrata Ink
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sitio web profesional desarrollado para **Leo Acrata**, tattoo artist especializado en realismo y Black & Grey.
 
-Currently, two official plugins are available:
+Diseñado para presentar su trabajo, transmitir su identidad artística y facilitar la solicitud de presupuestos con imágenes de referencia.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Vista principal del sitio web de Leo Acrata](docs/leo-acrata-preview.png)
 
-## React Compiler
+## Sitio web
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+[Visitar Leo Acrata Tattoo](https://leoacratatattoo.com.ar/)
 
-## Expanding the ESLint configuration
+## Funcionalidades
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Diseño responsive para dispositivos móviles y escritorio.
+- Portfolio fotográfico con carrusel interactivo.
+- Visualización ampliada de los trabajos.
+- Secciones de historia y cuidados posteriores.
+- Formulario para solicitar presupuestos.
+- Envío opcional de una imagen de referencia.
+- Integración con Cloudinary y EmailJS.
+- Validaciones y estados de carga, éxito y error.
+- Imágenes optimizadas para mejorar el rendimiento.
+
+## Tecnologías
+
+React 19 · Vite · JavaScript · Tailwind CSS · Framer Motion · EmailJS · Cloudinary · Sharp · ESLint
+
+## Autora
+
+Desarrollado por [Martu Gallonetti](https://github.com/MartuGallonetti).
+
+## Derechos
+
+El contenido visual y las fotografías pertenecen a Leo Acrata. No se autoriza su reutilización comercial sin permiso.
