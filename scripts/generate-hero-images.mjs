@@ -20,16 +20,15 @@ const heroImages = [
         quality: 92,
     },
     {
-        fileName: "LeonAntebrazo.webp",
+        fileName: "mangaJaponesa.webp",
         widths: [960],
-        quality: 92,
+        quality: 94,
     },
 ];
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 
 const publicDirectory = path.join(projectRoot, "public");
-
 const outputDirectory = path.join(publicDirectory, "hero");
 
 const formatKilobytes = (bytes) => `${Math.round(bytes / 1024)} KB`;
@@ -70,6 +69,7 @@ const generateHeroImages = async () => {
         const baseName = path.basename(fileName, extension);
 
         const sourceMetadata = await sharp(inputPath).metadata();
+
         const sourceStats = await stat(inputPath);
 
         console.log(

@@ -7,23 +7,34 @@ const TARGET_WIDTHS = [480, 960];
 const WEBP_QUALITY = 92;
 
 const galleryImages = [
+    "espaldaRealismo.webp",
+    "zorroAntebrazo.webp",
+    "mujerRosario.webp",
+    "mascaraPierna.webp",
+    "retratoHombre.webp",
+    "retratoVikingo.webp",
+    "calaveraAntebrazo.webp",
+    "retratoAnteojos.webp",
+    "mangaPierna.webp",
+    "rostroFemenino.webp",
     "leoGorra.webp",
     "conveVilla.webp",
-    "diabloMonja.webp",
     "DragonPierna.webp",
-    "espaldaCompleta.webp",
     "foxRiver.webp",
-    "guerreAntebrzo.webp",
     "leoMonja.webp",
     "mangaMonja.webp",
     "tatuandoRemeNegra.webp",
     "Snoop.webp",
+    "foxRiverCerca.webp",
+    "guerreManga.webp",
+    "mediaManga.webp",
+    "MediaPiernaCara.webp",
+    "monjaPrimeraSesion.webp",
 ];
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 
 const publicDirectory = path.join(projectRoot, "public");
-
 const outputDirectory = path.join(publicDirectory, "gallery");
 
 const formatKilobytes = (bytes) => `${Math.round(bytes / 1024)} KB`;
@@ -64,6 +75,7 @@ const generateGalleryImages = async () => {
         const baseName = path.basename(fileName, extension);
 
         const sourceMetadata = await sharp(inputPath).metadata();
+
         const sourceStats = await stat(inputPath);
 
         console.log(

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'
 
 export default function Hero() {
   return (
@@ -38,8 +38,8 @@ export default function Hero() {
 
           <div className="h-[350px] overflow-hidden rounded-sm border border-zinc-800 bg-zinc-900 shadow-2xl lg:h-[450px]">
             <img
-              src="/hero/LeonAntebrazo-960.webp"
-              alt="Tatuaje de león realizado por Leo Acrata"
+              src="/hero/mangaJaponesa-960.webp"
+              alt="Manga japonesa realizada por Leo Acrata"
               loading="eager"
               decoding="async"
               className="h-full w-full object-cover grayscale transition-all duration-700 ease-in-out hover:grayscale-0"
@@ -74,5 +74,5 @@ export default function Hero() {
         </motion.div>
       </div>
     </section>
-  );
+  )
 }
